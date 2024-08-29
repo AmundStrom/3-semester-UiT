@@ -1,0 +1,138 @@
+<aiml version="1.0">
+<!-- 
+    The AIML(Artificial Intelligence Markup Language) can be used to create simple chatbots.
+    Our goal is to mimic a conversation by expecting what a user might say.
+
+    We split the conversation into small parts called categories.
+    In each category we must have a pattern and a template.
+
+    A pattern is used to expect what a user might say, patterns has to be specified in upper case, 
+    but it is case insensitive for the user.
+
+    If a user inputs a pattern the chatbot chooses to say the template for that pattern:
+
+    Ex:
+        <category>
+            <pattern> HELLO </pattern>
+            <template> Hello I am a chatbot </template>
+        <category>
+
+        A conversation between the user and this bot could look like:
+
+        user: Hello
+        chatbot: Hello I am a chatbot
+-->
+
+<!-- A category includes a pattern and a template -->
+<category>
+    <pattern> HELLO </pattern>
+    <template>
+        <!-- We can use the random tag to define several templates(answers) to a pattern -->
+        <random>
+            <!-- We have to add all templates to in li(list) tag when using random -->
+            <li>Hello</li>
+            <li>Hola</li>
+            <li>Yo</li>
+            <li>How you doing</li>
+            <li>Hello <get name = "username"/></li>
+        </random>
+    </template>
+</category>
+
+<!-- We can replay information about the user using the * sign and the star tag -->
+<category>
+    <pattern>HELLO I AM *</pattern>
+    <template>
+        Hello <star/>
+    </template>
+</category>
+
+<!-- We can store information about the user using the * sign and the set tag -->
+<category>
+    <pattern>MY NAME IS * AND I AM *</pattern>
+    <template>
+        Hello <set name = "username"> <star index="1"/> </set> you are <star index="2"/>
+    </template>
+</category>
+
+<!-- We can retrive information about the user using the get tag -->
+<category>
+    <pattern>BYE</pattern>
+    <template>
+        Good bye <get name = "username"/>
+    </template>
+</category>
+
+<!-- Here we want to answe who Albert Einstein is -->
+<category>
+      <pattern> WHO IS ALBERT EINSTEIN </pattern>
+      <template>Albert Einstein was a German physicist</template>
+</category>
+
+<!-- Here we want to answer who Isaac Newton is -->
+<category>
+    <pattern> WHO IS ISAAC NEWTON </pattern>
+    <template>Isaac Newton was a English physicist and mathematician</template>
+</category>
+
+<!-- Here we can answer that we don't know if the user asks for someone else other than Isaac or Albert-->
+<category>
+    <pattern> WHO IS * </pattern>
+    <template>I'm sorry I dont know who <star/> is </template>
+</category>
+
+<!-- We can create several patterns for the same templates using the srai tag -->
+<!-- Here the user can ask WHO IS as above or DO YOU KNOW WHO IS as above -->
+<category>
+    <pattern>DO YOU KNOW WHO * IS</pattern>
+    <template>
+        <!-- Using the srai tag we can route this question to the WHO IS pattern above -->
+        <srai>WHO IS <star/></srai>
+    </template>
+</category>
+
+
+<!-- This is what i have written -->
+<category>
+    <pattern>*</pattern>
+    <template>
+        Sorry, I do not understand
+    </template>
+</category>
+
+<category>
+    <pattern>LETS TALK ABOUT CHEESE</pattern>
+    <template>
+        Yes! I love cheese, what is your favorite cheese?
+    </template>
+</category>
+
+<category>
+    <pattern>MY FAVORITE IS *</pattern>
+    <template>
+        <set name = "user_cheese"><star/></set> is a very good choice!
+    </template>
+</category>
+
+<category>
+    <pattern>DO YOU LIKE MUSIC</pattern>
+    <template>
+        <!-- We can use the random tag to define several templates(answers) to a pattern -->
+        <random>
+            <!-- We have to add all templates to in li(list) tag when using random -->
+            <li>Yes <set name = "robot_genre">Rap</set></li>
+            <li>Yes <set name = "robot_genre">Trap</set></li>
+            <li>Yes <set name = "robot_genre">Pop</set></li>
+            <li>Yes <set name = "robot_genre">Rock</set></li>
+        </random>
+    </template>
+</category>
+
+<category>
+    <pattern>WHAT MUSIC</pattern>
+    <template>
+        <get name = "robot_genre"/>!
+    </template>
+</category>
+
+</aiml>
